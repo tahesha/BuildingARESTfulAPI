@@ -4,6 +4,26 @@ const router = express.Router();
 const posts = require("../data/posts");
 const error = require("../utilities/error");
 
+// GET /api/users/:id/posts
+router.get("/users/:id/posts", (req, res) => {
+  const userId = parseInt(req.params.id);
+  const userPosts = posts.filter((post) => post.userId === userId);
+  res.json(userPosts);
+});
+
+
+// GET /api/posts?userId=<VALUE>
+router.get("/", (req, res) => {
+  const userId = parseInt(req.query.userId);
+  if (!userId) {
+    return res.status(400).json({ error: "userId query parameter is required" });
+  }
+  const userPosts = posts.filter((post) => post.userId === userId);
+  res.json(userPosts);
+});
+
+
+
 router
   .route("/")
   .get((req, res) => {
